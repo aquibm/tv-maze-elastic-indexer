@@ -1,5 +1,5 @@
 {
-    "name": "tv-maze-algolia-indexer",
+    "name": "tv-maze-elastic-indexer",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -10,8 +10,8 @@
     "author": "Aquib Master <aquibmaster@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "algoliasearch": "^3.24.3",
         "dotenv": "^4.0.0",
+        "elasticsearch": "^13.3.1",
         "got": "^7.1.0"
     }
 }
