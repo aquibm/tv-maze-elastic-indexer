@@ -7,9 +7,27 @@ const client = elasticsearch.Client({
     log: 'trace'
 })
 
+async function init() {
+    await createIndex()
+}
+
+async function createIndex() {
+    const index = process.env.ELASTIC_INDEX_NAME
+
+    const indexExists = await client.indices.exists({ index })
+
+    if (!indexExists) {
+        // TODO(AM): Add mappings.
+        await client.indices.create({ index })
+    }
+}
+
 client
     .ping()
-    .then(() => console.log('Connected to elastic search!'))
+    .then(() => {
+        console.log('Connected to elastic search!')
+        init()
+    })
     .catch(() =>
         console.log(
             `Could not connect to elastic search at host ${process.env
