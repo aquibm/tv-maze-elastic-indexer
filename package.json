@@ -1,17 +1,17 @@
 {
-  "name": "tv-maze-indexer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Aquib Master <aquibmaster@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "algoliasearch": "^3.24.3",
-    "dotenv": "^4.0.0",
-    "got": "^7.1.0"
-  }
+    "name": "tv-maze-algolia-indexer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Aquib Master <aquibmaster@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "algoliasearch": "^3.24.3",
+        "dotenv": "^4.0.0",
+        "got": "^7.1.0"
+    }
 }
