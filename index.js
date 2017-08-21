@@ -13,6 +13,7 @@ let totalItemsIndexed = 0
 
 async function init() {
     await createIndex()
+    await updateMappings()
 
     readPage(0).then(() => {
         console.log('All done')
@@ -75,11 +76,200 @@ async function createIndex() {
     })
 
     if (!indexExists) {
-        // TODO(AM): Add mappings.
         await client.indices.create({
             index
         })
     }
+}
+
+// Tuning
+async function updateMappings() {
+    const properties = {
+        url: {
+            type: 'text',
+            index: 'not_analyzed'
+        },
+        type: {
+            type: 'text',
+            index: 'not_analyzed'
+        },
+        language: {
+            type: 'text',
+            index: 'not_analyzed'
+        },
+        status: {
+            type: 'text',
+            index: 'not_analyzed'
+        },
+        runtime: {
+            type: 'long',
+            index: 'not_analyzed'
+        },
+        premiered: {
+            type: 'date',
+            index: 'not_analyzed'
+        },
+        officialSite: {
+            type: 'text',
+            index: 'not_analyzed'
+        },
+        schedule: {
+            properties: {
+                time: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                },
+                days: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                }
+            }
+        },
+        network: {
+            properties: {
+                id: {
+                    type: 'long',
+                    index: 'not_analyzed'
+                },
+                name: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                },
+                country: {
+                    properties: {
+                        name: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        },
+                        code: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        },
+                        timezone: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        }
+                    }
+                }
+            }
+        },
+        webChannel: {
+            properties: {
+                id: {
+                    type: 'long',
+                    index: 'not_analyzed'
+                },
+                name: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                },
+                country: {
+                    properties: {
+                        name: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        },
+                        code: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        },
+                        timezone: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        }
+                    }
+                }
+            }
+        },
+        externals: {
+            properties: {
+                tvrage: {
+                    type: 'long',
+                    index: 'not_analyzed'
+                },
+                thetvtb: {
+                    type: 'long',
+                    index: 'not_analyzed'
+                },
+                imdb: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                }
+            }
+        },
+        image: {
+            properties: {
+                medium: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                },
+                original: {
+                    type: 'text',
+                    index: 'not_analyzed'
+                }
+            }
+        },
+        updated: {
+            type: 'long',
+            index: 'not_analyzed'
+        },
+        _links: {
+            properties: {
+                self: {
+                    properties: {
+                        href: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        }
+                    }
+                },
+                previousepisode: {
+                    properties: {
+                        href: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        }
+                    }
+                },
+                nextepisode: {
+                    properties: {
+                        href: {
+                            type: 'text',
+                            index: 'not_analyzed'
+                        }
+                    }
+                }
+            }
+        },
+        summary: {
+            type: 'text',
+            boost: 1
+        },
+        rating: {
+            properties: {
+                average: {
+                    type: 'float',
+                    boost: 0
+                }
+            }
+        },
+        name: {
+            type: 'text',
+            boost: 1
+        },
+        weight: {
+            type: 'long',
+            boost: 0
+        }
+    }
+
+    client.indices.putMapping({
+        index: process.env.ELASTIC_INDEX_NAME,
+        type: 'show',
+        body: {
+            properties
+        }
+    })
 }
 
 client
