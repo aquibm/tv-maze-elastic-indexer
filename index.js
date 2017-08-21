@@ -1,4 +1,6 @@
-require('dotenv').config({ path: './conf.env' })
+require('dotenv').config({
+    path: './conf.env'
+})
 const got = require('got')
 const elasticsearch = require('elasticsearch')
 
@@ -22,7 +24,7 @@ function readPage(pageNumber) {
         .then(resp => JSON.parse(resp.body))
         .then(data => {
             return new Promise((resolve, reject) => {
-                console.log(`[Debug]: Read page ${pageNumber} from TV Rage`)
+                console.log(`[Debug]: Read page ${pageNumber} from TV Maze`)
 
                 if (!data || data.length === 0)
                     throw Error(`No data found on page ${pageNumber}`)
@@ -38,11 +40,16 @@ function readPage(pageNumber) {
                         }
                     })
 
-                    body.push({ doc: show, doc_as_upsert: true })
+                    body.push({
+                        doc: show,
+                        doc_as_upsert: true
+                    })
                 })
 
                 client
-                    .bulk({ body })
+                    .bulk({
+                        body
+                    })
                     .then(() => {
                         totalItemsIndexed += data.length
                         console.log(
@@ -63,11 +70,15 @@ function readPage(pageNumber) {
 async function createIndex() {
     const index = process.env.ELASTIC_INDEX_NAME
 
-    const indexExists = await client.indices.exists({ index })
+    const indexExists = await client.indices.exists({
+        index
+    })
 
     if (!indexExists) {
         // TODO(AM): Add mappings.
-        await client.indices.create({ index })
+        await client.indices.create({
+            index
+        })
     }
 }
 
